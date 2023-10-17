@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Este repositório contém um emulador para detecção de *Heavy Hitters* em switches multi-pipes. O emulador suporta duas abordagens distintas para essa detecção: a abordagem Accumulator (*A*) e a abordagem Local Pipe (*L*). Cada abordagem tem sua implementação correspondente no código-fonte, identificada pelas letras *A* e *L* nos nomes dos programas.
+Este repositório contém um emulador para detecção de *Heavy Hitters* em switches multi-pipes. O emulador suporta duas abordagens distintas para essa detecção: a abordagem Accumulator (*A*) e a abordagem Local Pipe (*LP*). Cada abordagem tem sua implementação correspondente no código-fonte, identificada pelas letras *A* e *L* nos nomes dos programas.
 
 Além disso, ambas as abordagens oferecem duas opções de métodos de detecção: com Limites Adaptáveis e com Limite Fixo.
 
@@ -20,4 +20,4 @@ Ambas as abordagens oferecem opções de detecção altamente adaptáveis, permi
 
 - **Abordagem Accumulator (*A*)**: Esta abordagem utiliza um acumulador no switch para controle da contagem e comunicação com o plano de controle.
 
-- **Abordagem Local Pipe (*L*)**: Esta abordagem, por sua vez, comunica individualmente por pipe com o plano de controle. 
+- **Abordagem Local Pipe (*LP*)**: Esta abordagem, por sua vez, comunica individualmente por pipe com o plano de controle. 
