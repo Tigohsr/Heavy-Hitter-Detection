@@ -1,4 +1,4 @@
-# Emulador para Detecção de Heavy Hitters em Switches Multi-Pipes
+# Detecção de Heavy Hitters em Switches Multi-Pipes
 
 ## Descrição
 
