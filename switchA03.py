@@ -7,6 +7,8 @@ from sklearn.metrics import f1_score
 import coordenador
 import valores
 import time
+import resource
+import os
 
 pipesTable = np.array([np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,), np.zeros(524288,)], dtype=int)  #tabela com hash tables (tabela dos pipes)   ###CONTADOR
 acumuladorPipe = np.zeros((524288,), dtype=int)
@@ -17,6 +19,7 @@ pipeLimitArray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 nSwitches = valores.qntDeSwitches()
 globalLimit = valores.limiteGlobal()
 nPipes = valores.qntDePipes()
+#nPipes = 8
 switchLimit = int(globalLimit/nSwitches)
 switchLimitBackup = switchLimit
 fluxoEmUmPipe = 0
@@ -30,7 +33,6 @@ pipeLimit = int(switchLimit/nPipes)
 randomPipe = random.randint(0,(nPipes-1)) 
 switch = 3
 fim = 0
-
 
 #controla qual o limite de cada PIPE
 def divisionLimitPipes():
@@ -250,7 +252,7 @@ def createHash(packet):
         randomPipe = random.randint(0,(nPipes-1)) 
         fluxoEmUmPipe = 0
 
-    #select the source and destination IP of the packet
+    #seleciona a origem e destino do pacote IP
     if IP in packet and TCP in packet:
         ip_src=packet[IP].src
         ip_dst=packet[IP].dst
@@ -259,11 +261,9 @@ def createHash(packet):
         hash = int(hashlib.md5((str(ip_src) + str(ip_dst) + str(tcp_sport) + str(tcp_dport)).encode()).hexdigest(), 16) % 524288
         concatenadoIP = str(ip_src)+str(ip_dst)+str(tcp_sport)+str(tcp_dport)
 
-        #packet counter in table at hash position
+        #contador de pacotes na posição da tabela hash 
         pipesTable[randomPipe][hash] = pipesTable[randomPipe][hash] + 1
         todosValoresHash[hash] = todosValoresHash[hash] + 1
-
-        #createHashDict(concatenadoIP)
 
         checkLimit(randomPipe)
 
@@ -283,9 +283,11 @@ def checkLimit(randomPipe):
 
         if (acumuladorPipe[hash]>=switchLimit):
             total = acumuladorPipe[hash]
-            switchLimit = coordenador.funcaoCoordenadorA(hash,total,switch,switchLimit,fim)
-            print("switchLimit",switchLimit)
-            print("switchLimitBackup",switchLimitBackup)
+            #coordenador.funcaoCoordenadorA(hash,total,switch,switchLimit,fim) #Para limite fixo utilizar essa linha
+
+            #Para limite adaptativo utilizar esse bloco
+            #'''
+            switchLimit = coordenador.funcaoCoordenadorA(hash,total,switch,switchLimit,fim) 
             if(switchLimit!=switchLimitBackup):
                 divisionLimitPipes()
                 divisionLimitPipes2()
@@ -296,7 +298,7 @@ def checkLimit(randomPipe):
                 switchLimit = switchLimitInt
                 print("Limite atual",switchLimit)
                 switchLimitBackup = switchLimit   
-
+            #'''
             reports = reports +1
             acumuladorPipe[hash] = 0
 
@@ -323,18 +325,20 @@ def main():
     global fim
 
     print("Switch 3 iniciado")
+    print("Quantidade de pipes:", nPipes)
     now = datetime.now()
     divisionLimitPipes()     
 
-    sniff(offline="equinix-nyc-03.pcap", filter = "ip and tcp", prn=createHash, store = 0) ###"caida18-16x.pcap" filter = "ip or tcp or udp"
+    #leitura fluxo CAIDA
+    sniff(offline="equinix-nyc-03.pcap", filter = "ip and tcp", prn=createHash, store = 0) 
     fim = 1
     coordenador.controllerSwitchA(acumuladorPipe, controllerCheck, pipesTable, reports, switch,switchLimit,fim)
-
     fimTempo = time.time()
     tempo_execucao = fimTempo - inicio
     tempo_formatado = "{:.2f}".format(tempo_execucao)
 
     print("Tempo de execução Switch 3:", tempo_formatado, "s")
+    print("\n")
 
 if __name__ == '__main__':
     main()   

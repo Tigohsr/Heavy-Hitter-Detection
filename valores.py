@@ -5,7 +5,7 @@ def limiteGlobal():
     return 10000
 
 def qntDePipes():
-    return 4
+    return 2
 
 def alfa():
     return 0.8

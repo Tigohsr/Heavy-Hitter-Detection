@@ -57,7 +57,7 @@ def checkLimitDict():
     for x in range(len(array)):
         if(array[x]>=globalLimit):
             hashPrint = int(hashlib.md5((arrayKey[x]).encode()).hexdigest(), 16) % 524288
-            print("->>" ,hashPrint, " ",array[x])
+            #print("->>" ,hashPrint, " ",array[x])
             hhDict = hhDict+1
     return hhDict
 
@@ -71,13 +71,15 @@ def main():
     fp = 0
     fn = 0
 
-    print("Contagem Dicionario")
+    #print("Contagem Dicionario") 
 
-    sniff(offline="equinix-nyc.pcap", filter = "ip and tcp", prn=createHash, store = 0)
+    #leitura fluxo CAIDA
+    sniff(offline="equinix-menorMM-01.pcap", filter = "ip and tcp", prn=createHash, store = 0)
     hhDict = checkLimitDict()
-    print("HH do Dicionario:",hhDict) 
+    print("\\\\\HH do Dicionario:",hhDict) 
     print("\n\n--------------------------------")
 
+    #Obtem a tabela final dos hashes para comparar e realizar o F1-Score
     tabelaCoordenador = coordenador.f1score()
     for chave in dict.keys():
         
@@ -99,25 +101,28 @@ def main():
     print("VN=",vn)
     print("FP=",fp)
     print("FN=",fn)
+    print("\n")
 
     qhh = coordenador.qHH()
 
     if(hhDict>0):
-        precision = vp/qhh #vp / (vp + fp)  ---- / precision = vp/hhDict
+        precision = vp/qhh 
     elif(hhDict<0):
         precision=0    
     recall = vp / (vp + fn)
     f1Score = (2 * (precision * recall)) / (precision + recall) 
 
-
-    print("-Precision",precision)
-    print("-Recall",recall)
-    print("-F1Score",f1Score)
+    print("-Precision:",precision)
+    print("-Recall:",recall)
+    print("-F1Score:",f1Score)
+    print("\n")
 
     fim = time.time()
     tempo_execucao = fim - inicio
-    print("Quantidade de pacotes",xDict)
-    print("Quantidade de fluxos",(len(dict)))
+    print("Quantidade de pacotes:",xDict)
+    print("Quantidade de fluxos:",(len(dict)))
+    print("Tempo de Execucao:", tempo_execucao)
+    
 
 if __name__ == '__main__':
     main()   
