@@ -23,4 +23,10 @@ Ambas as abordagens oferecem opções de detecção adaptáveis, permitindo que 
 - **Abordagem Local Pipe (*LP*)**: Esta abordagem comunica individualmente por pipe com o plano de controle.
 
 ## Execução
+Utilizamos um Trace CAIDA Equinix-NYC, que foi dividido em partes para cada switch, com intuito de simular a distribuição do fluxo de dados em diferentes switches na rede. O trace inteiro se encontra no código "f1Score.py", que realiza a contagem real para obtenção da métrica F1-Score.
+
+Para a execução do código é preciso rodar o "terminalA.py" para o Accumulator ou "terminalLP.py" para o Local-pipe. 
+Caso queira alterar o trace, será necessario altera-lo nos switches de rede e no código f1Score.
+
+
 
