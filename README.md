@@ -1,32 +1,37 @@
-# Detecção de Heavy Hitters em Network-Wide com Switches Multi-Pipes 
+# Network-Wide Heavy Hitters Detection with Multi-Pipes Switches
 
-## Descrição
+## Description
 
-Este repositório contém um emulador para detecção de *Heavy Hitters* em *Network-Wide* com switches *multi-pipes* . O emulador suporta duas abordagens distintas para essa detecção: a abordagem Accumulator (*A*) e a abordagem Local-Pipe (*LP*). Cada abordagem tem sua implementação correspondente no código-fonte, identificada pelas letras *A* e *LP* nos nomes dos programas.
+This repository contains an emulator for detecting *Heavy Hitters* in a *Network-Wide* setting with multi-pipes switches. The emulator supports two distinct approaches for this detection: the Accumulator (*A*) approach and the Local-Pipe (*LP*) approach. Each approach has its corresponding implementation in the source code, identified by the letters *A* and *LP* in the program names.
 
-Além disso, ambas as abordagens oferecem duas opções de métodos de detecção: com Limites Adaptáveis e com Limite Fixo.
+Furthermore, both approaches offer two options for detection methods: with Adaptive Limits and with Fixed Limit.
 
-Ambas as abordagens oferecem opções de detecção adaptáveis, permitindo que o usuário ajuste os seguintes parâmetros:
+Both approaches provide adaptable detection options, allowing the user to adjust the following parameters:
 
-- **Quantidade de Switches**: O número de switches envolvidos na detecção pode ser especificado pelo usuário.
+- **Number of Switches**: The number of switches involved in detection can be specified by the user.
 
-- **Limite**: O usuário pode definir um limite global para a detecção de *Heavy Hitters*, seja adaptável ou fixo.
+- **Limit**: The user can set a global limit for detecting *Heavy Hitters*, whether adaptive or fixed.
 
-- **Fator de Suavização**: A suavização pode ser personalizada com um fator escolhido pelo usuário. O Fator de suavização refere-se a variavel responsavel paelo limite adaptativo.
+- **Smoothing Factor**: Smoothing can be customized with a user-chosen factor. The Smoothing Factor refers to the variable responsible for the adaptive limit.
 
-- **Pipes**: O usuário pode configurar a quantidade de pipes conforme necessário, que seja até 16 pipes.
+- **Pipes**: The user can configure the number of pipes as needed, up to 16 pipes.
 
-## Abordagens
+## Approaches
 
-- **Abordagem Accumulator (*A*)**: Esta abordagem utiliza um acumulador no switch para controle da contagem e comunicação com o plano de controle.
+- **Accumulator Approach (*A*)**: This approach uses an accumulator in the switch for counting and communication with the control plane.
 
-- **Abordagem Local Pipe (*LP*)**: Esta abordagem comunica individualmente por pipe com o plano de controle.
+- **Local Pipe Approach (*LP*)**: This approach communicates individually through a pipe with the control plane.
 
-## Execução
-Utilizamos um Trace CAIDA Equinix-NYC, que foi dividido em partes para cada switch, com intuito de simular a distribuição do fluxo de dados em diferentes switches na rede. O trace inteiro se encontra no código "f1Score.py", que realiza a contagem real para obtenção da métrica F1-Score.
+## Execution
 
-Para a execução do código é preciso rodar o "terminalA.py" para o Accumulator ou "terminalLP.py" para o Local-pipe. 
-Caso queira alterar o trace, será necessario altera-lo nos switches de rede e no código f1Score.
+We use the CAIDA Equinix-NYC Trace, which has been divided into parts for each switch, aiming to simulate the distribution of data flow across different switches in the network. The complete trace is contained in the file "f1Score.py", which performs the actual counting for obtaining the F1-Score metric.
+
+To execute the code, it is necessary to run the file "terminalA.py" for the Accumulator or "terminalLP.py" for the Local-Pipe. If you wish to modify the trace, you will need to make changes in the network switches and in the code "f1Score.py".
+
+To run the code using adaptive or fixed limits, you need to make changes in the switches of the respective approach and in the coordinator (the location of the change is indicated as a comment). If you want to increase the number of switches in the network, you will need to make changes in the terminal corresponding to the desired approach.
+
+
+
 
 
 
