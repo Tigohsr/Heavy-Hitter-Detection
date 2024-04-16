@@ -74,7 +74,7 @@ def main():
     #print("Contagem Dicionario") 
 
     #leitura fluxo CAIDA
-    sniff(offline="equinix-menorMM-01.pcap", filter = "ip and tcp", prn=createHash, store = 0)
+    sniff(offline="equinix-ncy.pcap", filter = "ip and tcp", prn=createHash, store = 0)
     hhDict = checkLimitDict()
     print("\\\\\HH do Dicionario:",hhDict) 
     print("\n\n--------------------------------")
